@@ -1,7 +1,7 @@
-FROM nginx:alpine
+FROM nginx:stable-alpine
 LABEL authors="AYYOU"
 
-COPY . /usr/share/nginx/html
+COPY --from=0 . /usr/share/nginx/html
 
 EXPOSE 80
 

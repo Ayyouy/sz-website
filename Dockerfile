@@ -1,5 +1,6 @@
 FROM nginx:stable-alpine
-LABEL authors="AYYOU"
+
+LABEL authors="ayyou"
 
 COPY . /usr/share/nginx/html
 

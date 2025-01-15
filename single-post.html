@@ -40,13 +40,11 @@
         <div class="row">
             <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
                 <div class="section-title text-center">
-                    <h2>Explore things your body love and make yourself feel better about your body</h2>
+                    <h2 id="single-post-title">标题</h2>
                     <div class="breadcrumbs">
                         <span class="item"><a href="index.html">Home /</a></span>
-                        <span class="item"><a href="News.html">News</a></span>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -56,50 +54,21 @@
         <div class="row">
             <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
                 <figure>
-                    <img src="images/milad-fakurian-j6IEwWmiWtk-unsplash.jpg" class="img-fluid">
-                    <figcaption>Photo by <a
-                            href="https://unsplash.com/@fakurian?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Milad
-                        Fakurian</a> on <a
-                            href="https://unsplash.com/s/photos/cryptocurrency-art?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-                    </figcaption>
+                    <img id='single-post-image' src="images/milad-fakurian-j6IEwWmiWtk-unsplash.jpg" class="img-fluid">
                 </figure>
                 <div class="post-content mt-4">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut elit
+                    <p id="single-post-int">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut elit
                         et.Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut
-                        elit et.</p>
-                    <blockquote class="blockquote">This is blockquote consectetur adipisicing elit sed do eisusmod
-                        tempor incidunt ut elit et.
+                        elit et.
+                    </p>
+                    <blockquote id="single-post-sub" class="blockquote">
+                        This is blockquote consectetur adipisicing elit sed do eisusmod tempor incidunt ut elit et.
                     </blockquote>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut elit
-                        et.Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut
-                        elit et.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia eserunt mollit anim id est laborum.</p>
-                    <div class="row my-5 justify-content-around">
-                        <div class="col-md-4">
-                            <img src="images/nft-item1.jpg" alt="post-image" class="img-fluid align-left">
-                        </div>
-                        <div class="col-md-4">
-                            <img src="images/nft-item2.jpg" alt="post-image" class="img-fluid align-left">
-                        </div>
-                        <div class="col-md-4">
-                            <img src="images/nft-item3.jpg" alt="post-image" class="img-fluid align-left">
-                        </div>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut elit
-                        et.Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eisusmod tempor incidunt ut
-                        elit et.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia eserunt mollit anim id est laborum.</p>
+                    <div id="single-post-html"></div>
                 </div>
                 <div align="center">
-                    <button type="button" class="btn btn-outline-primary"><a href="News.html">返回上一层</a></button>
+                    <button type="button" class="btn btn-outline-primary"></button>
                 </div>
             </div>
         </div>
@@ -127,28 +96,39 @@
         });
     });
     window.onload = function () {
-        const type = sessionStorage.getItem('type')
-        const content = sessionStorage.getItem('content')
-        console.log('type:', type)
-        console.log('content:', content)
+        const url = new URLSearchParams(window.location.search)
+        const id = url.get('id')
+        if (id) {
+            $.ajax({
+                url: 'http://129.204.23.247:8101/api/officeSite/detail.do',
+                type: 'get',
+                data: {id: id},
+                contentType: 'application/json',
+                success: function (result) {
+                    if (result.status === 0) {
+                        document.getElementById('single-post-title').innerText = result.data.title
+                        document.getElementById('single-post-image').src = result.data.imgUrl
+                        document.getElementById('single-post-int').innerText = result.data.introduction
+                        document.getElementById('single-post-sub').innerText = result.data.subTitle
+                        document.getElementById('single-post-html').innerHTML = result.data.content
+                        if (result.data.type === 1) {
+                            $('.breadcrumbs').append('<span class="item"><a href="Investment%20Outlook.html">Investment Outlook</a></span>')
+                            $('.btn-outline-primary').append('<a href="Investment%20Outlook.html">返回上一层</a>')
+                        } else if (result.data.type === 2) {
+                            $('.breadcrumbs').append('<span class="item"><a href="Market%20Trends.html">Market Trends</a></span>')
+                            $('.btn-outline-primary').append('<a href="Market%20Trends.html">返回上一层</a>')
+                        } else if (result.data.type === 3) {
+                            $('.breadcrumbs').append('<span class="item"><a href="News.html">News</a></span>')
+                            $('.btn-outline-primary').append('<a href="News.html">返回上一层</a>')
+                        }
+                    }
+                },
+                error: function () {
+                    Swal.fire('错误提示', '加载出错', 'error');
+                },
+                timeout: 180000,
+            });
+        }
     }
-    // const url = new URLSearchParams(window.location.search)
-    // const detail = url.get('detail')
-    // const type = url.get('type')
-    // const title = url.get('title')
-    // const imgUrl = url.get('img')
-    // const introduction = url.get('intr')
-    // const subTitle = url.get('sub')
-    // const content = url.get('content')
-    // const time = url.get('time')
-    // console.log('detail', detail)
-    // console.log('type', type)
-    // console.log('imgUrl', imgUrl)
-    // console.log('introduction', introduction)
-    // console.log('subTitle', subTitle)
-    // console.log('content', content)
-    // console.log('time', time)
-    // Swal.fire('错误提示', '加载出错', 'error');
-    // Swal.fire('温馨提示', '已全部加载', 'success');
 </script>
 </html>

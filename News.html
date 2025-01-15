@@ -92,7 +92,7 @@
     });
     // type  1 表示投资展望 2 市场趋势 3 公司新闻
     let page = 1
-    let size = 1
+    let size = 9
     let loaded = true
     loading()
 
@@ -118,20 +118,12 @@
                                 '        </figure>' +
                                 '        <div class="post-content">' +
                                 '            <div class="meta-date">' + timeStamp2String(item.updateTime) + '</div>' +
-                                '            <h2 class="post-title" ><a href="single-post.html?id=' + item.id + '">' + item.subTitle + '</a></h2>' +
-                                '            <p>' + item.introduction + '</p>' +
+                                '            <h2 class="post-title" ><a href="single-post.html?id=' + item.id + '" class="post-introduction">' + item.subTitle + '</a></h2>' +
+                                '            <p class="post-introduction">' + item.introduction + '</p>' +
                                 '            <a href="single-post.html?id=' + item.id + '" class="btn-link">Read more</a>' +
                                 '        </div>' +
                                 '    </article>' +
                                 '</div>')
-                            $('#list div .post-content a').on('click', function (ev) {
-                                ev.preventDefault()
-                                const type = this.getAttribute('data-type')
-                                const content = this.getAttribute('data-content')
-                                sessionStorage.setItem('type', type)
-                                sessionStorage.setItem('content', content)
-                                window.location.href = this.href
-                            })
                         }
                     }
                 },

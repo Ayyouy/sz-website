@@ -43,6 +43,7 @@
                     <h2 id="single-post-title">标题</h2>
                     <div class="breadcrumbs">
                         <span class="item"><a href="index.html">Home /</a></span>
+                        <span class="item"><a id="single-post-to" href="#"></a></span>
                     </div>
                 </div>
             </div>
@@ -68,7 +69,9 @@
                     <div id="single-post-html"></div>
                 </div>
                 <div align="center">
-                    <button type="button" class="btn btn-outline-primary"></button>
+                    <button type="button" class="btn btn-outline-primary">
+                        <a id="single-post-back" href="index.html">返回首页</a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -111,15 +114,21 @@
                         document.getElementById('single-post-int').innerText = result.data.introduction
                         document.getElementById('single-post-sub').innerText = result.data.subTitle
                         document.getElementById('single-post-html').innerHTML = result.data.content
+                        let back = document.getElementById('single-post-back');
+                        let top = document.getElementById('single-post-to');
+                        back.innerText = '返回上一层'
                         if (result.data.type === 1) {
-                            $('.breadcrumbs').append('<span class="item"><a href="Investment%20Outlook.html">Investment Outlook</a></span>')
-                            $('.btn-outline-primary').append('<a href="Investment%20Outlook.html">返回上一层</a>')
+                            top.innerText = 'Investment Outlook'
+                            top.href = 'Investment%20Outlook.html'
+                            back.href = 'Investment%20Outlook.html'
                         } else if (result.data.type === 2) {
-                            $('.breadcrumbs').append('<span class="item"><a href="Market%20Trends.html">Market Trends</a></span>')
-                            $('.btn-outline-primary').append('<a href="Market%20Trends.html">返回上一层</a>')
+                            top.innerText = 'Market Trends'
+                            top.href = 'Market%20Trends.html'
+                            back.href = 'Market%20Trends.html'
                         } else if (result.data.type === 3) {
-                            $('.breadcrumbs').append('<span class="item"><a href="News.html">News</a></span>')
-                            $('.btn-outline-primary').append('<a href="News.html">返回上一层</a>')
+                            top.innerText = 'News'
+                            top.href = 'News.html'
+                            back.href = 'News.html'
                         }
                     }
                 },
